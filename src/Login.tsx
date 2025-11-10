@@ -1,39 +1,37 @@
-import React , { useState } from "react";
-
+import { useState, FormEvent, ChangeEvent } from 'react';
 import "./bootstrap/css/bootstrap.min.css";
 import "./Login.css";
 import qr6 from "./sary/qr_6.png";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const handleLogin = (e) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Form submit handler
+  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    // Simulation d'une requête
     setTimeout(() => {
       if (email === "11" && password === "bera33") {
-        // navigate("/dashboard");
         setIsLoggedIn(true);
       } else {
         setError("Email ou mot de passe incorrect");
         setIsLoggedIn(false);
       }
       setIsLoading(false);
- 
     }, 1500);
   };
 
   return (
-    <>
-    <div className="login-container">
+    <div className="login-wrapper" style={{ display: 'flex', justifyContent: 'center', gap: '2rem', alignItems: 'flex-start' }}>
+      {/* Login Card */}
       <div className="login-card shadow-lg p-4 rounded-4">
-        {/* Header */}
         <div className="login-header">
           <div className="login-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,8 +43,8 @@ const Login = () => {
           <p className="login-subtitle">Connectez-vous à votre compte</p>
         </div>
 
-        <div onSubmit={handleLogin}>
-          
+        {/* Form */}
+        <form onSubmit={handleLogin}>
           {/* Email Input */}
           <div className="input-group-modern">
             <label>Adresse Email</label>
@@ -61,7 +59,7 @@ const Login = () => {
                 type="email"
                 className="form-control form-control-modern"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 placeholder="vous@exemple.com"
                 required
               />
@@ -85,7 +83,7 @@ const Login = () => {
                 type={showPassword ? "text" : "password"}
                 className="form-control form-control-modern"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
               />
@@ -109,19 +107,10 @@ const Login = () => {
           </div>
 
           {/* Error Message */}
-          {error && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
+          {error && <div className="error-message">{error}</div>}
 
           {/* Submit Button */}
-          <button
-            type="submit"
-            className="btn btn-login"
-            onClick={handleLogin}
-            disabled={isLoading}
-          >
+          <button type="submit" className="btn btn-login" disabled={isLoading}>
             {isLoading ? (
               <>
                 <div className="spinner"></div>
@@ -136,7 +125,7 @@ const Login = () => {
               </>
             )}
           </button>
-        </div>
+        </form>
 
         {/* Divider */}
         <div className="divider">
@@ -145,34 +134,29 @@ const Login = () => {
 
         {/* Sign Up Link */}
         <p className="signup-link">
-          Pas encore de compte ?{" "}
-          <a href="/signup">Créer un compte</a>
+          Pas encore de compte ? <a href="/signup">Créer un compte</a>
         </p>
 
         {/* Security Badge */}
-        <p className="security-badge">
-          🔒 Protégé par un cryptage de niveau entreprise
-        </p>
-        
+        <p className="security-badge">🔒 Protégé par un cryptage de niveau entreprise</p>
       </div>
-              {/* ✅ Image affichée à droite seulement si connecté */}
 
+      {/* QR Code — affiché à droite seulement si connecté */}
+      {isLoggedIn && (
+        <div className="qr-image-container">
+          <img
+            src={qr6}
+            alt="QR Code"
+            className="img-fluid rounded shadow"
+            style={{
+              width: "300px",
+              height: "300px",
+              objectFit: "contain"
+            }}
+          />
+        </div>
+      )}
     </div>
-        {isLoggedIn && (
-          <div className="qr-image-container">
-            <img
-              src={qr6}
-              alt="QR Code"
-              className="img-fluid rounded shadow"
-              style={{
-                width: "300px",
-                height: "300px",
-                objectFit: "contain"
-              }}
-            />
-          </div>
-        )}
-    </>
   );
 };
 
