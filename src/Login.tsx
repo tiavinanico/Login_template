@@ -53,7 +53,7 @@ const Login = () => {
                 </svg>
               </div>
               <input
-                type="email"
+                type="text"
                 className="form-control form-control-modern"
                 value={email}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
